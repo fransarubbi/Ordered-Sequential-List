@@ -12,7 +12,7 @@ void information(list , Deliveries *);
 
 //Funciones internas
 void loadDeliveries(Deliveries *);
-
+void changeDeliveries(Deliveries *);
 
 /*
 consultar la informacion completa asociada al envio
@@ -222,7 +222,7 @@ void delete(list *lso, int *cant){
 
 void changeList(list *lso){
     
-    Deliveries dev;
+    Deliveries d;
     char code[CODE];
     int i, changeValue, evocationValue;
 
@@ -231,16 +231,15 @@ void changeList(list *lso){
     for(i = 0; code[i] != '\0'; i++){
         code[i] = toupper(code[i]);
     }
-    setCodigo(&dev, code);
+    setCodigo(&d, code);
     
-    evocationValue = evocation(*lso, &dev);
+    evocationValue = evocation(*lso, &d);
     if(evocationValue == 0){
         printf("No se pueden modificar datos, no hay coincidencias para el codigo %s\n", code);
     }
     else{
-        printf("Se encontraron coincidencias para el codigo %s\n", code);
-        loadDeliveries(&dev);
-        changeValue = change(lso, dev);
+        changeDeliveries(&d);
+        changeValue = change(lso, d);
         if(changeValue == 1){
             printf("Se han realizado las modificaciones correctamente.\n");
         }
@@ -268,14 +267,14 @@ void information(list lso, Deliveries *dev){
         printf("-------------------------------\n");
         printf("   INFORMACION DEL ENVIO %s\n", code);
         printf("-------------------------------\n");
-        printf("Codigo: %s\n",(*dev).code);
-        printf("DNI: %ld\n",(*dev).doc);
-        printf("DNI Remitente: %ld\n",(*dev).docSender);
-        printf("Nombre y apellido del receptor: %s\n",(*dev).name);
-        printf("Nombre y apellido del remitente: %s\n",(*dev).nameSender);
-        printf("Domicilio de envio: %s\n",(*dev).address);
-        printf("Fecha de envio: %s\n",(*dev).dateSender);
-        printf("Fecha de recepcion: %s\n\n",(*dev).dateReceived);
+        printf("Codigo: %s\n",getCodigo(*dev));
+        //printf("DNI: %ld\n",(*dev).doc);
+        //printf("DNI Remitente: %ld\n",(*dev).docSender);
+        //printf("Nombre y apellido del receptor: %s\n",(*dev).name);
+        //printf("Nombre y apellido del remitente: %s\n",(*dev).nameSender);
+        //printf("Domicilio de envio: %s\n",(*dev).address);
+        //printf("Fecha de envio: %s\n",(*dev).dateSender);
+        //printf("Fecha de recepcion: %s\n\n",(*dev).dateReceived);
         //showDeliveries(*dev);
     }
     else{
@@ -297,6 +296,57 @@ void loadDeliveries(Deliveries *dev){
         c[i] = toupper(c[i]);
     }
     setCodigo(dev, c);
+
+    printf("Ingrese el documento del receptor: \n");
+    scanf("%ld", &d);
+    setDni(dev, d);
+
+    printf("Ingrese el documento del emisor: \n");
+    scanf("%ld", &ds);
+    setDniRem(dev, ds);
+
+    printf("Ingrese el nombre del receptor: \n");
+    scanf(" %[^\n]", n);
+    for(i = 0; n[i] != '\0'; i++){
+        n[i] = toupper(n[i]);
+    }
+    setNomAp(dev, n);
+
+    printf("Ingrese el nombre del emisor: \n");
+    scanf(" %[^\n]", n);
+    for(i = 0; n[i] != '\0'; i++){
+        n[i] = toupper(n[i]);
+    }
+    setNomApRem(dev, n);
+
+    printf("Ingrese la direccion del envio: \n");
+    scanf(" %[^\n]", n);
+    for(i = 0; n[i] != '\0'; i++){
+        n[i] = toupper(n[i]);
+    }
+    setDomicilio(dev, n);
+
+    printf("Ingrese la fecha de envio: \n");
+    scanf(" %[^\n]", date);
+    for(i = 0; date[i] != '\0'; i++){
+        date[i] = toupper(date[i]);
+    }
+    setFechaEnv(dev, date);
+
+    printf("Ingrese la fecha de recepcion: \n");
+    scanf(" %[^\n]", date);
+    for(i = 0; date[i] != '\0'; i++){
+        date[i] = toupper(date[i]);
+    }
+    setFechaRec(dev, date);
+}
+
+
+void changeDeliveries(Deliveries *dev){
+
+    int i;
+    long d, ds;
+    char n[NAME], date[DATE];
 
     printf("Ingrese el documento del receptor: \n");
     scanf("%ld", &d);

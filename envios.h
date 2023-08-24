@@ -2,6 +2,7 @@
 #define DELIVERIES_H_INCLUDED
 #include <stdio.h>
 #include <string.h>
+#include <malloc.h>
 
 #define CODE 7
 #define NAME 80
@@ -53,6 +54,73 @@ void setFechaRec(Deliveries *d, char f[]){
 
 
 //Getters
+
+/*
+char* mostrar_surname_goalscorer(team t){
+    char *aux;
+    aux = (char*)malloc(sizeof(char)*strlen(t.player_goals.surname));
+    strcpy(aux, t.player_goals.surname);
+    return aux;
+}
+*/
+
+char* getCodigo(Deliveries d){
+    char *aux;
+    aux = (char*)malloc(sizeof(char)*strlen(d.code));
+    strcpy(aux, d.code);
+    return aux;
+}
+
+char* getDni(Deliveries d){
+    char *aux;
+    aux = (char*)malloc(sizeof(char)*strlen(d.doc));
+    strcpy(aux, d.doc);
+    return aux;
+}
+
+char* getDniRem(Deliveries d){
+    char *aux;
+    aux = (char*)malloc(sizeof(char)*strlen(d.docSender));
+    strcpy(aux, d.docSender);
+    return aux;
+}
+
+char* getNomAp(Deliveries d){
+    char *aux;
+    aux = (char*)malloc(sizeof(char)*strlen(d.name));
+    strcpy(aux, d.name);
+    return aux;
+}
+
+char* getNomApRem(Deliveries d){
+    char *aux;
+    aux = (char*)malloc(sizeof(char)*strlen(d.nameSender));
+    strcpy(aux, d.nameSender);
+    return aux;
+}
+
+char* getDomicilio(Deliveries d){
+    char *aux;
+    aux = (char*)malloc(sizeof(char)*strlen(d.address));
+    strcpy(aux, d.address);
+    return aux;
+}
+
+char* getFechaEnv(Deliveries d){
+    char *aux;
+    aux = (char*)malloc(sizeof(char)*strlen(d.dateSender));
+    strcpy(aux, d.dateSender);
+    return aux;
+}
+
+char* getFechaRec(Deliveries d){
+    char *aux;
+    aux = (char*)malloc(sizeof(char)*strlen(d.dateReceived));
+    strcpy(aux, d.dateReceived);
+    return aux;
+}
+
+
 void showDeliveries(Deliveries d){
 
     printf("Codigo: %s\n",d.code);
