@@ -54,16 +54,6 @@ void setFechaRec(Deliveries *d, char f[]){
 
 
 //Getters
-
-/*
-char* mostrar_surname_goalscorer(team t){
-    char *aux;
-    aux = (char*)malloc(sizeof(char)*strlen(t.player_goals.surname));
-    strcpy(aux, t.player_goals.surname);
-    return aux;
-}
-*/
-
 char* getCodigo(Deliveries d){
     char *aux;
     aux = (char*)malloc(sizeof(char)*strlen(d.code));
