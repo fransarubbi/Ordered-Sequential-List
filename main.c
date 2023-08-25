@@ -90,23 +90,34 @@ void loadList(list *lso, Deliveries *dev, int *cant){
 
     int n, i = 0, highValue, enter;
     do{
-        printf("¿Cuantas reservas quiere cargar? Maximo 300\n");
-        printf("Lleva cargados %d elementos.\n", *cant);
+        printf("|----------------------------------------------|\n");
+        printf("| ¿Cuantas reservas quiere cargar? Maximo 300  |\n");
+        printf("|----------------------------------------------|\n");
+        printf("         Lleva cargados %d elementos            \n", *cant);
+        printf("|----------------------------------------------|\n");
         scanf("%d", &n);
     }while(n < 1 || n > (SIZE - (*cant)));
 
     do{
-        printf("------- Cargando Datos -------\n");
+        printf("\n|--------------------------------|");
+        printf("\n|-------- Cargando Datos --------|");
+        printf("\n|--------------------------------|\n");
         loadDeliveries(dev);
         highValue = high(lso, *dev);
         switch(highValue){
-            case 0: printf("Error al cargar elemento. No hay mas espacio.\n");
+            case 0: printf("|----------------------------------------------|\n");
+                    printf("| Error al cargar elemento. No hay mas espacio |\n");
+                    printf("|----------------------------------------------|\n");
                     break;
             
-            case 1: printf("Error al cargar elemento. El elemento ya existe.\n");
+            case 1: printf("|-------------------------------------------------|\n");
+                    printf("| Error al cargar elemento. El elemento ya existe |\n");
+                    printf("|-------------------------------------------------|\n");
                     break;
 
-            case 2: printf("Carga exitosa de datos.\n");
+            case 2: printf("|----------------------------------------------|\n");
+                    printf("|           Carga exitosa de datos             |\n");
+                    printf("|----------------------------------------------|\n");
                     i++;
                     *cant = *cant + 1;
                     break;
@@ -114,8 +125,10 @@ void loadList(list *lso, Deliveries *dev, int *cant){
     }while(highValue != 0 && (i < n));
 
     do{
-      printf("\nCarga completa. Ingrese 1 para continuar...\n\n");
-      scanf("%d", &enter);
+        printf("\n|---------------------------------|");
+        printf("\n|  Ingrese 1 para volver al menu  |");
+        printf("\n|---------------------------------|\n");
+        scanf("%d", &enter);
    }while(enter != 1);
 }
 
@@ -131,7 +144,9 @@ void preload(list *lso, int *cant){
     preload = fopen("Envios.txt", "r");
 
     if(preload == NULL){
-        printf("No se pudo acceder al archivo.\n");
+        printf("|----------------------------------------------|\n");
+        printf("|       No se pudo acceder al archivo          |\n");
+        printf("|----------------------------------------------|\n");
         exit(1);
     }
     else{
@@ -156,25 +171,35 @@ void preload(list *lso, int *cant){
             highValue = high(lso, dev);
 
             switch(highValue){
-                case 0: printf("Error al cargar elemento. No hay mas espacio.\n");
+                case 0: printf("|----------------------------------------------|\n");
+                        printf("| Error al cargar elemento. No hay mas espacio |\n");
+                        printf("|----------------------------------------------|\n");
                         exit(1);
                         break;
             
-                case 1: printf("Error al cargar elemento. El elemento ya existe.\n");
+                case 1: printf("|-------------------------------------------------|\n");
+                        printf("| Error al cargar elemento. El elemento ya existe |\n");
+                        printf("|-------------------------------------------------|\n");
                         break;
 
-                case 2: printf("Carga exitosa de datos.\n");
+                case 2: printf("|----------------------------------------------|\n");
+                        printf("|            Carga exitosa de datos            |\n");
+                        printf("|----------------------------------------------|\n");
                         *cant = *cant + 1;
                         break;
             }
         }
-        printf("Se ha realizado correctamente la carga de datos.\n");
+        printf("|-------------------------------------------------|\n");
+        printf("| Se ha realizado correctamente la carga de datos |\n");
+        printf("|-------------------------------------------------|\n");
     }
     fclose(preload);
     printf("CANT VALE: %d\n", *cant);
     do{
-      printf("Ingrese 1 para continuar...\n");
-      scanf("%d", &enter);
+        printf("\n|---------------------------------|");
+        printf("\n|  Ingrese 1 para volver al menu  |");
+        printf("\n|---------------------------------|\n");
+        scanf("%d", &enter);
    }while(enter != 1);
 }
 
@@ -185,13 +210,17 @@ void delete(list *lso, int *cant){
     char code[CODE];
     int n, i = 0, j = 0, lowValue, evocationValue, enter;
     do{
-        printf("¿Cuantos envios quiere eliminar? Maximo %d\n", *cant);
+        printf("|---------------------------------------------------|\n");
+        printf("|     ¿Cuantos envios quiere eliminar? Maximo %d    |\n", *cant);
+        printf("|---------------------------------------------------|\n");
         scanf("%d", &n);
     }while(n < 1 || n > *cant);
 
     do{
-        printf("------- Eliminando Datos -------\n");
-        printf("Ingrese el codigo del envio a eliminar: \n");
+        printf("|----------------------------------------------|\n");
+        printf("|-------------- Eliminando Datos --------------|\n");
+        printf("|----------------------------------------------|\n");
+        printf("|   Ingrese el codigo del envio a eliminar:    |\n");
         scanf("%s", code);
         for(i = 0; code[i] != '\0'; i++){
             code[i] = toupper(code[i]);
@@ -202,23 +231,31 @@ void delete(list *lso, int *cant){
         if(evocationValue == 1){
             lowValue = low(lso, dev);
             switch(lowValue){
-                case 1: printf("Error al borrar elemento. Ha cancelado el proceso.\n");
+                case 1: printf("|-----------------------------------------------------|\n");
+                        printf("|  Error al borrar elemento. Ha cancelado el proceso  |\n");
+                        printf("|-----------------------------------------------------|\n");
                         break;
 
-                case 2: printf("Baja exitosa de datos.\n");
+                case 2: printf("|----------------------------------------------|\n");
+                        printf("|            Baja exitosa de datos             |\n");
+                        printf("|----------------------------------------------|\n");
                         j++;
                         *cant = *cant - 1;
                         break;
             }
         }
         else{
-            printf("Error al borrar elemento. No existe en la lista.\n");
+            printf("|---------------------------------------------------|\n");
+            printf("|  Error al borrar elemento. No existe en la lista  |\n");
+            printf("|---------------------------------------------------|\n");
         }
     }while(lowValue != 0 && (j < n));
 
     do{
-      printf("\nBaja completa. Ingrese 1 para continuar...\n");
-      scanf("%d", &enter);
+        printf("\n|---------------------------------|");
+        printf("\n|  Ingrese 1 para volver al menu  |");
+        printf("\n|---------------------------------|\n");
+        scanf("%d", &enter);
    }while(enter != 1);
 }
 
@@ -227,9 +264,10 @@ void changeList(list *lso){
     
     Deliveries d;
     char code[CODE];
-    int i, changeValue, evocationValue;
+    int i, changeValue, evocationValue, enter;
 
-    printf("Ingrese el codigo del envio que desea modificar: \n");
+    printf("|----------------------------------------------------|\n");
+    printf("|  Ingrese el codigo del envio que desea modificar:  |\n");
     scanf("%s", code);
     for(i = 0; code[i] != '\0'; i++){
         code[i] = toupper(code[i]);
@@ -238,28 +276,43 @@ void changeList(list *lso){
     
     evocationValue = evocation(*lso, &d);
     if(evocationValue == 0){
-        printf("No se pueden modificar datos, no hay coincidencias para el codigo %s\n", code);
+        printf("|----------------------------------------------------------------------------|\n");
+        printf("|  No se pueden modificar datos, no hay coincidencias para el codigo %s      |\n", code);
+        printf("|----------------------------------------------------------------------------|\n");
     }
     else{
         changeDeliveries(&d);
         changeValue = change(lso, d);
         if(changeValue == 1){
-            printf("Se han realizado las modificaciones correctamente.\n");
+            printf("|-------------------------------------------------------|\n");
+            printf("|   Se han realizado las modificaciones correctamente   |\n");
+            printf("|-------------------------------------------------------|\n");
         }
         else{
-            printf("Error al modificar los datos.\n");
+            printf("|----------------------------------------------|\n");
+            printf("|         Error al modificar los datos         |\n");
+            printf("|----------------------------------------------|\n");
         }
     }
+
+    do{
+        printf("\n|---------------------------------|");
+        printf("\n|  Ingrese 1 para volver al menu  |");
+        printf("\n|---------------------------------|\n");
+        scanf("%d", &enter);
+    }while(enter != 1);
 }
 
 
 void information(list lso){
 
     Deliveries d;
-    int i, evocationValue;
+    int i, evocationValue, enter;
     char code[CODE];
 
-    printf("Ingrese el codigo del envio que desea obtener informacion: \n");
+    printf("|----------------------------------------------------------------|\n");
+    printf("|   Ingrese el codigo del envio que desea obtener informacion:   |\n");
+    printf("|----------------------------------------------------------------|\n");
     scanf("%s", code);
     for(i = 0; code[i] != '\0'; i++){
         code[i] = toupper(code[i]);
@@ -268,14 +321,23 @@ void information(list lso){
 
     evocationValue = evocation(lso, &d);
     if(evocationValue == 1){
-        printf("-------------------------------\n");
-        printf("   INFORMACION DEL ENVIO %s\n", code);
-        printf("-------------------------------\n");
+        printf("\n|-------------------------------|");
+        printf("\n|   INFORMACION DEL ENVIO %s    |", code);
+        printf("\n|-------------------------------|\n\n");
         showDeliveries(d);
     }
     else{
-        printf("No se han encontrado coincidencias para el codigo %s\n", code);
+        printf("|----------------------------------------------------------|\n");
+        printf("|   No se han encontrado coincidencias para el codigo %s   |\n", code);
+        printf("|----------------------------------------------------------|\n");
     }
+
+    do{
+        printf("\n|---------------------------------|");
+        printf("\n|  Ingrese 1 para volver al menu  |");
+        printf("\n|---------------------------------|\n");
+        scanf("%d", &enter);
+    }while(enter != 1);
 }
 
 
@@ -286,50 +348,58 @@ void loadDeliveries(Deliveries *dev){
     long d, ds;
     char c[CODE], n[NAME], date[DATE];
 
-    printf("Ingrese el codigo correspondiente al envio: \n");
+    printf("|----------------------------------------------|\n");
+    printf("| Ingrese el codigo correspondiente al envio:  |\n");
     scanf("%s", c);
     for(i = 0; c[i] != '\0'; i++){
         c[i] = toupper(c[i]);
     }
     setCodigo(dev, c);
 
-    printf("Ingrese el documento del receptor: \n");
+    printf("|--------------------------------------|\n");
+    printf("| Ingrese el documento del receptor:   |\n");
     scanf("%ld", &d);
     setDni(dev, d);
 
-    printf("Ingrese el documento del emisor: \n");
+    printf("|----------------------------------|\n");
+    printf("| Ingrese el documento del emisor: |\n");
     scanf("%ld", &ds);
     setDniRem(dev, ds);
 
-    printf("Ingrese el nombre del receptor: \n");
+    printf("|---------------------------------|\n");
+    printf("| Ingrese el nombre del receptor: |\n");
     scanf(" %[^\n]", n);
     for(i = 0; n[i] != '\0'; i++){
         n[i] = toupper(n[i]);
     }
     setNomAp(dev, n);
 
-    printf("Ingrese el nombre del emisor: \n");
+    printf("|-------------------------------|\n");
+    printf("| Ingrese el nombre del emisor: |\n");
     scanf(" %[^\n]", n);
     for(i = 0; n[i] != '\0'; i++){
         n[i] = toupper(n[i]);
     }
     setNomApRem(dev, n);
 
-    printf("Ingrese la direccion del envio: \n");
+    printf("|-----------------------------------|\n");
+    printf("|  Ingrese la direccion del envio:  |\n");
     scanf(" %[^\n]", n);
     for(i = 0; n[i] != '\0'; i++){
         n[i] = toupper(n[i]);
     }
     setDomicilio(dev, n);
 
-    printf("Ingrese la fecha de envio: \n");
+    printf("|------------------------------|\n");
+    printf("|  Ingrese la fecha de envio:  |\n");
     scanf(" %[^\n]", date);
     for(i = 0; date[i] != '\0'; i++){
         date[i] = toupper(date[i]);
     }
     setFechaEnv(dev, date);
 
-    printf("Ingrese la fecha de recepcion: \n");
+    printf("|----------------------------------|\n");
+    printf("|  Ingrese la fecha de recepcion:  |\n");
     scanf(" %[^\n]", date);
     for(i = 0; date[i] != '\0'; i++){
         date[i] = toupper(date[i]);
@@ -403,19 +473,22 @@ void changeDeliveries(Deliveries *dev){
         }
         
         switch(option){
-            case 1: printf("Ingrese el documento del receptor: \n");
+            case 1: printf("|--------------------------------------|\n");
+                    printf("|  Ingrese el documento del receptor:  |\n");
                     scanf("%ld", &d);
                     setDni(dev, d);
                     control[0] = 1;
                     break;
 
-            case 2: printf("Ingrese el documento del emisor: \n");
+            case 2: printf("|-------------------------------------|\n");
+                    printf("|  Ingrese el documento del emisor:   |\n");
                     scanf("%ld", &ds);
                     setDniRem(dev, ds);
                     control[1] = 1;
                     break;
 
-            case 3: printf("Ingrese el nombre del receptor: \n");
+            case 3: printf("|------------------------------------|\n");
+                    printf("|  Ingrese el nombre del receptor:   |\n");
                     scanf(" %[^\n]", n);
                     for(i = 0; n[i] != '\0'; i++){
                         n[i] = toupper(n[i]);
@@ -424,7 +497,8 @@ void changeDeliveries(Deliveries *dev){
                     control[2] = 1;
                     break;
 
-            case 4: printf("Ingrese el nombre del emisor: \n");
+            case 4: printf("|---------------------------------|\n");
+                    printf("|  Ingrese el nombre del emisor:  |\n");
                     scanf(" %[^\n]", n);
                     for(i = 0; n[i] != '\0'; i++){
                         n[i] = toupper(n[i]);
@@ -433,7 +507,8 @@ void changeDeliveries(Deliveries *dev){
                     control[3] = 1;
                     break;
 
-            case 5: printf("Ingrese la direccion del envio: \n");
+            case 5: printf("|-----------------------------------|\n");
+                    printf("|  Ingrese la direccion del envio:  |\n");
                     scanf(" %[^\n]", n);
                     for(i = 0; n[i] != '\0'; i++){
                         n[i] = toupper(n[i]);
@@ -442,7 +517,8 @@ void changeDeliveries(Deliveries *dev){
                     control[4] = 1;
                     break;
 
-            case 6: printf("Ingrese la fecha de envio: \n");
+            case 6: printf("|------------------------------|\n");
+                    printf("|  Ingrese la fecha de envio:  |\n");
                     scanf(" %[^\n]", date);
                     for(i = 0; date[i] != '\0'; i++){
                         date[i] = toupper(date[i]);
@@ -451,7 +527,8 @@ void changeDeliveries(Deliveries *dev){
                     control[5] = 1;
                     break;
 
-            case 7: printf("Ingrese la fecha de recepcion: \n");
+            case 7: printf("|----------------------------------|\n");
+                    printf("|  Ingrese la fecha de recepcion:  |\n");
                     scanf(" %[^\n]", date);
                     for(i = 0; date[i] != '\0'; i++){
                         date[i] = toupper(date[i]);
