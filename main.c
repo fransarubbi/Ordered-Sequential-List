@@ -3,7 +3,6 @@
 
 //Funciones del menu
 void loadList(list *, Deliveries *, int *);  //Cargar elementos
-void showList(list );     //Mostrar lista
 void preload(list *, int *);    //Realizar precarga de datos por archivo
 void delete(list *, int *);    //Eliminar elementos
 void changeList(list *);    //Modificar elementos
@@ -70,7 +69,14 @@ int main(){
         case 5: preload(&lso, &cant);
                 break;
 
-        case 6: show(lso);
+        case 6: if(cant == 0){
+                    printf("\n|-------------------------------------------------|");
+                    printf("\n| No se pueden mostrar datos. La lista esta vacia |");
+                    printf("\n|-------------------------------------------------|\n");
+                }
+                else{
+                    show(lso);
+                }
                 break;
     }
  }while(opcion != 7);
@@ -94,30 +100,30 @@ void loadList(list *lso, Deliveries *dev, int *cant){
         printf("| ¿Cuantas reservas quiere cargar? Maximo 300  |\n");
         printf("|----------------------------------------------|\n");
         printf("         Lleva cargados %d elementos            \n", *cant);
-        printf("|----------------------------------------------|\n");
+        printf("|----------------------------------------------|\n\n");
         scanf("%d", &n);
     }while(n < 1 || n > (SIZE - (*cant)));
 
     do{
         printf("\n|--------------------------------|");
         printf("\n|-------- Cargando Datos --------|");
-        printf("\n|--------------------------------|\n");
+        printf("\n|--------------------------------|\n\n");
         loadDeliveries(dev);
         highValue = high(lso, *dev);
         switch(highValue){
             case 0: printf("|----------------------------------------------|\n");
                     printf("| Error al cargar elemento. No hay mas espacio |\n");
-                    printf("|----------------------------------------------|\n");
+                    printf("|----------------------------------------------|\n\n");
                     break;
             
             case 1: printf("|-------------------------------------------------|\n");
                     printf("| Error al cargar elemento. El elemento ya existe |\n");
-                    printf("|-------------------------------------------------|\n");
+                    printf("|-------------------------------------------------|\n\n");
                     break;
 
             case 2: printf("|----------------------------------------------|\n");
                     printf("|           Carga exitosa de datos             |\n");
-                    printf("|----------------------------------------------|\n");
+                    printf("|----------------------------------------------|\n\n");
                     i++;
                     *cant = *cant + 1;
                     break;
@@ -136,7 +142,7 @@ void loadList(list *lso, Deliveries *dev, int *cant){
 void preload(list *lso, int *cant){
     
     Deliveries dev;
-    char code[CODE], name[NAME], nameSender[NAME], addres[NAME], dateS[DATE], dateR[NAME];
+    char code[CODE], name[NAME], nameSender[NAME], addres[NAME], dateS[DATE], dateR[DATE];
     long dni, dniS;
     int highValue, enter, belongsValue;
 
@@ -146,7 +152,7 @@ void preload(list *lso, int *cant){
     if(preload == NULL){
         printf("|----------------------------------------------|\n");
         printf("|       No se pudo acceder al archivo          |\n");
-        printf("|----------------------------------------------|\n");
+        printf("|----------------------------------------------|\n\n");
         exit(1);
     }
     else{
@@ -155,14 +161,14 @@ void preload(list *lso, int *cant){
             setCodigo(&dev, code);
             fscanf(preload, "%ld\n", &dni);
             setDni(&dev, dni);
-            fscanf(preload, " %[^\n]\n", name);
-            setNomAp(&dev, name);
+            fscanf(preload, " %[^\n]\n", nameSender);
+            setNomApRem(&dev, nameSender);
             fscanf(preload, " %[^\n]\n", addres);
             setDomicilio(&dev, addres);
             fscanf(preload, "%ld\n", &dniS);
             setDniRem(&dev, dniS);
-            fscanf(preload, " %[^\n]\n", nameSender);
-            setDniRem(&dev, nameSender);
+            fscanf(preload, " %[^\n]\n", name);
+            setNomAp(&dev, name);
             fscanf(preload, " %[^\n]\n", dateS);
             setFechaEnv(&dev, dateS);
             fscanf(preload, " %[^\n]\n", dateR);
@@ -173,28 +179,29 @@ void preload(list *lso, int *cant){
             switch(highValue){
                 case 0: printf("|----------------------------------------------|\n");
                         printf("| Error al cargar elemento. No hay mas espacio |\n");
-                        printf("|----------------------------------------------|\n");
+                        printf("|----------------------------------------------|\n\n");
                         exit(1);
                         break;
             
                 case 1: printf("|-------------------------------------------------|\n");
                         printf("| Error al cargar elemento. El elemento ya existe |\n");
-                        printf("|-------------------------------------------------|\n");
+                        printf("|-------------------------------------------------|\n\n");
                         break;
 
                 case 2: printf("|----------------------------------------------|\n");
                         printf("|            Carga exitosa de datos            |\n");
-                        printf("|----------------------------------------------|\n");
+                        printf("|----------------------------------------------|\n\n");
                         *cant = *cant + 1;
                         break;
             }
         }
         printf("|-------------------------------------------------|\n");
         printf("| Se ha realizado correctamente la carga de datos |\n");
-        printf("|-------------------------------------------------|\n");
+        printf("|-------------------------------------------------|\n\n");
+        printf("           Elementos cargados: %d\n", *cant);
     }
     fclose(preload);
-    printf("CANT VALE: %d\n", *cant);
+    
     do{
         printf("\n|---------------------------------|");
         printf("\n|  Ingrese 1 para volver al menu  |");
@@ -209,47 +216,55 @@ void delete(list *lso, int *cant){
     Deliveries dev;
     char code[CODE];
     int n, i = 0, j = 0, lowValue, evocationValue, enter;
-    do{
-        printf("|---------------------------------------------------|\n");
-        printf("|     ¿Cuantos envios quiere eliminar? Maximo %d    |\n", *cant);
-        printf("|---------------------------------------------------|\n");
-        scanf("%d", &n);
-    }while(n < 1 || n > *cant);
 
-    do{
-        printf("|----------------------------------------------|\n");
-        printf("|-------------- Eliminando Datos --------------|\n");
-        printf("|----------------------------------------------|\n");
-        printf("|   Ingrese el codigo del envio a eliminar:    |\n");
-        scanf("%s", code);
-        for(i = 0; code[i] != '\0'; i++){
-            code[i] = toupper(code[i]);
-        }
-        setCodigo(&dev, code);
-        evocationValue = evocation(*lso, &dev);
+    if(*cant < 1){
+        printf("\n|------------------------------------------|");
+        printf("\n| No se pueden eliminar datos. Lista vacia |");
+        printf("\n|------------------------------------------|\n");
+    }
+    else{
+        do{
+            printf("|---------------------------------------------------|\n");
+            printf("    ¿Cuantos envios quiere eliminar? Maximo %d\n", *cant);
+            printf("|---------------------------------------------------|\n");
+            scanf("%d", &n);
+        }while(n < 1 || n > *cant);
 
-        if(evocationValue == 1){
-            lowValue = low(lso, dev);
-            switch(lowValue){
-                case 1: printf("|-----------------------------------------------------|\n");
-                        printf("|  Error al borrar elemento. Ha cancelado el proceso  |\n");
-                        printf("|-----------------------------------------------------|\n");
-                        break;
-
-                case 2: printf("|----------------------------------------------|\n");
-                        printf("|            Baja exitosa de datos             |\n");
-                        printf("|----------------------------------------------|\n");
-                        j++;
-                        *cant = *cant - 1;
-                        break;
+        do{
+            printf("\n|----------------------------------------------|");
+            printf("\n|-------------- Eliminando Datos --------------|");
+            printf("\n|----------------------------------------------|");
+            printf("\n|   Ingrese el codigo del envio a eliminar:    |\n");
+            scanf("%s", code);
+            for(i = 0; code[i] != '\0'; i++){
+                code[i] = toupper(code[i]);
             }
-        }
-        else{
-            printf("|---------------------------------------------------|\n");
-            printf("|  Error al borrar elemento. No existe en la lista  |\n");
-            printf("|---------------------------------------------------|\n");
-        }
-    }while(lowValue != 0 && (j < n));
+            setCodigo(&dev, code);
+            evocationValue = evocation(*lso, &dev);
+
+            if(evocationValue == 1){
+                lowValue = low(lso, dev);
+                switch(lowValue){
+                    case 1: printf("|-----------------------------------------------------|\n");
+                            printf("|  Error al borrar elemento. Ha cancelado el proceso  |\n");
+                            printf("|-----------------------------------------------------|\n\n");
+                            break;
+
+                    case 2: printf("|----------------------------------------------|\n");
+                            printf("|            Baja exitosa de datos             |\n");
+                            printf("|----------------------------------------------|\n\n");
+                            j++;
+                            *cant = *cant - 1;
+                            break;
+                }
+            }
+            else{
+                printf("|---------------------------------------------------|\n");
+                printf("|  Error al borrar elemento. No existe en la lista  |\n");
+                printf("|---------------------------------------------------|\n\n");
+            }
+        }while(lowValue != 0 && (j < n));
+    }
 
     do{
         printf("\n|---------------------------------|");
@@ -310,9 +325,9 @@ void information(list lso){
     int i, evocationValue, enter;
     char code[CODE];
 
-    printf("|----------------------------------------------------------------|\n");
-    printf("|   Ingrese el codigo del envio que desea obtener informacion:   |\n");
-    printf("|----------------------------------------------------------------|\n");
+    printf("\n|----------------------------------------------------------------|");
+    printf("\n|   Ingrese el codigo del envio que desea obtener informacion:   |");
+    printf("\n|----------------------------------------------------------------|\n");
     scanf("%s", code);
     for(i = 0; code[i] != '\0'; i++){
         code[i] = toupper(code[i]);
@@ -321,15 +336,22 @@ void information(list lso){
 
     evocationValue = evocation(lso, &d);
     if(evocationValue == 1){
-        printf("\n|-------------------------------|");
-        printf("\n|   INFORMACION DEL ENVIO %s    |", code);
-        printf("\n|-------------------------------|\n\n");
-        showDeliveries(d);
+        printf("\n|---------------------------------|");
+        printf("\n    INFORMACION DEL ENVIO %s", code);
+        printf("\n|---------------------------------|\n\n");
+        printf("\n| Codigo: %s", getCodigo(d));
+        printf("\n| Dni receptor: %ld", getDni(d));
+        printf("\n| Dni remitente: %ld", getDniRem(d));
+        printf("\n| Nombre y apellido del receptor: %s", getNomAp(d));
+        printf("\n| Nombre y apellido del remitente: %s", getNomApRem(d));
+        printf("\n| Domicilio del envio: %s", getDomicilio(d));
+        printf("\n| Fecha de envio: %s", getFechaEnv(d));
+        printf("\n| Fecha de recepcion: %s", getFechaRec(d));
     }
     else{
-        printf("|----------------------------------------------------------|\n");
-        printf("|   No se han encontrado coincidencias para el codigo %s   |\n", code);
-        printf("|----------------------------------------------------------|\n");
+        printf("|------------------------------------------------------------|\n");
+        printf("    No se han encontrado coincidencias para el codigo %s\n", code);
+        printf("|------------------------------------------------------------|\n\n");
     }
 
     do{
@@ -345,26 +367,26 @@ void information(list lso){
 void loadDeliveries(Deliveries *dev){
 
     int i;
-    long d, ds;
+    long d;
     char c[CODE], n[NAME], date[DATE];
 
-    printf("|----------------------------------------------|\n");
-    printf("| Ingrese el codigo correspondiente al envio:  |\n");
+    printf("|---------------------------------------------|\n");
+    printf("| Ingrese el codigo correspondiente al envio: |\n");
     scanf("%s", c);
     for(i = 0; c[i] != '\0'; i++){
         c[i] = toupper(c[i]);
     }
     setCodigo(dev, c);
 
-    printf("|--------------------------------------|\n");
-    printf("| Ingrese el documento del receptor:   |\n");
+    printf("|------------------------------------|\n");
+    printf("| Ingrese el documento del receptor: |\n");
     scanf("%ld", &d);
     setDni(dev, d);
 
     printf("|----------------------------------|\n");
     printf("| Ingrese el documento del emisor: |\n");
-    scanf("%ld", &ds);
-    setDniRem(dev, ds);
+    scanf("%ld", &d);
+    setDniRem(dev, d);
 
     printf("|---------------------------------|\n");
     printf("| Ingrese el nombre del receptor: |\n");

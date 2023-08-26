@@ -4,9 +4,11 @@
 #include <string.h>
 #include <malloc.h>
 
-#define CODE 7
+
+#define CODE 8
 #define NAME 80
-#define DATE 10
+#define DATE 11
+
 
 typedef struct{
     char code[CODE];
@@ -24,29 +26,36 @@ void setCodigo(Deliveries *d, char c[]){
     strcpy((*d).code, c);
 }
 
+
 void setDni(Deliveries *d, long dni){
     (*d).doc = dni;
 }
+
 
 void setDniRem(Deliveries *d, long dni){
     (*d).docSender = dni;
 }
 
+
 void setNomAp(Deliveries *d, char n[]){
     strcpy((*d).name, n);
 }
+
 
 void setNomApRem(Deliveries *d, char n[]){
     strcpy((*d).nameSender, n);
 }
 
+
 void setDomicilio(Deliveries *d, char a[]){
     strcpy((*d).address, a);
 }
 
+
 void setFechaEnv(Deliveries *d, char f[]){
     strcpy((*d).dateSender, f);
 }
+
 
 void setFechaRec(Deliveries *d, char f[]){
     strcpy((*d).dateReceived, f);
@@ -54,16 +63,61 @@ void setFechaRec(Deliveries *d, char f[]){
 
 
 //Getters
-void showDeliveries(Deliveries d){
+char* getCodigo(Deliveries d){
+    char *aux;
+    aux = (char*)malloc(sizeof(char)*strlen(d.code));
+    strcpy(aux, d.code);
+    return aux;
+}
 
-    printf("Codigo: %s\n",d.code);
-    printf("DNI: %ld\n",d.doc);
-    printf("DNI Remitente: %ld\n",d.docSender);
-    printf("Nombre y apellido del receptor: %s\n",d.name);
-    printf("Nombre y apellido del remitente: %s\n",d.nameSender);
-    printf("Domicilio de envio: %s\n",d.address);
-    printf("Fecha de envio: %s\n",d.dateSender);
-    printf("Fecha de recepcion: %s\n\n",d.dateReceived);
+
+long getDni(Deliveries d){
+    return d.doc;
+}
+
+
+long getDniRem(Deliveries d){
+    return d.docSender;
+}
+
+
+char* getNomAp(Deliveries d){
+    char *aux;
+    aux = (char*)malloc(sizeof(char)*strlen(d.name));
+    strcpy(aux, d.name);
+    return aux;
+}
+
+
+char* getNomApRem(Deliveries d){
+    char *aux;
+    aux = (char*)malloc(sizeof(char)*strlen(d.nameSender));
+    strcpy(aux, d.nameSender);
+    return aux;
+}
+
+
+char* getDomicilio(Deliveries d){
+    char *aux;
+    aux = (char*)malloc(sizeof(char)*strlen(d.address));
+    strcpy(aux, d.address);
+    return aux;
+}
+
+
+char* getFechaEnv(Deliveries d){
+    char *aux;
+    aux = (char*)malloc(sizeof(char)*strlen(d.dateSender));
+    strcpy(aux, d.dateSender);
+    return aux;
+}
+
+
+char* getFechaRec(Deliveries d){
+    char *aux;
+    aux = (char*)malloc(sizeof(char)*strlen(d.dateReceived));
+    strcpy(aux, d.dateReceived);
+    return aux;
 }
 
 #endif
