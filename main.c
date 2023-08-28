@@ -1,3 +1,5 @@
+//Grupo 7  Sarubbi Franco - Orozco Mateo
+
 #include "lso.h"
 #include <ctype.h>
 
@@ -60,10 +62,24 @@ int main(){
         case 2: delete(&lso, &cant);
                 break;
 
-        case 3: changeList(&lso);
+        case 3: if(cant == 0){
+                    printf("\n|---------------------------------------------------|");
+                    printf("\n| No se pueden modificar datos. La lista esta vacia |");
+                    printf("\n|---------------------------------------------------|\n");
+                }
+                else{
+                    changeList(&lso);
+                }
                 break;
 
-        case 4: information(lso);
+        case 4: if(cant == 0){
+                    printf("\n|-------------------------------------------------|");
+                    printf("\n| No se pueden mostrar datos. La lista esta vacia |");
+                    printf("\n|-------------------------------------------------|\n");
+                }
+                else{
+                    information(lso);
+                }
                 break;
 
         case 5: preload(&lso, &cant);
@@ -84,7 +100,7 @@ int main(){
  printf("\n|===========================================|");
  printf("\n|       GRACIAS POR USAR EL SISTEMA         |");
  printf("\n|             ENVIOS EL REVOLEO             |");
- printf("\n|===========================================|");
+ printf("\n|===========================================|\n\n");
 
  return 0;
 }
@@ -195,9 +211,6 @@ void preload(list *lso, int *cant){
                         break;
             }
         }
-        printf("|-------------------------------------------------|\n");
-        printf("| Se ha realizado correctamente la carga de datos |\n");
-        printf("|-------------------------------------------------|\n\n");
         printf("           Elementos cargados: %d\n", *cant);
     }
     fclose(preload);
@@ -292,7 +305,7 @@ void changeList(list *lso){
     evocationValue = evocation(*lso, &d);
     if(evocationValue == 0){
         printf("|----------------------------------------------------------------------------|\n");
-        printf("|  No se pueden modificar datos, no hay coincidencias para el codigo %s      |\n", code);
+        printf("   No se pueden modificar datos, no hay coincidencias para el codigo %s      \n", code);
         printf("|----------------------------------------------------------------------------|\n");
     }
     else{
@@ -349,9 +362,9 @@ void information(list lso){
         printf("\n| Fecha de recepcion: %s", getFechaRec(d));
     }
     else{
-        printf("|------------------------------------------------------------|\n");
+        printf("|--------------------------------------------------------------|\n");
         printf("    No se han encontrado coincidencias para el codigo %s\n", code);
-        printf("|------------------------------------------------------------|\n\n");
+        printf("|--------------------------------------------------------------|\n\n");
     }
 
     do{
@@ -378,14 +391,18 @@ void loadDeliveries(Deliveries *dev){
     }
     setCodigo(dev, c);
 
-    printf("|------------------------------------|\n");
-    printf("| Ingrese el documento del receptor: |\n");
-    scanf("%ld", &d);
+    do{
+        printf("|------------------------------------|\n");
+        printf("| Ingrese el documento del receptor: |\n");
+        scanf("%ld", &d);
+    }while(d < 4000000 || d > 50000000);  //rango de documento entre 4.000.000 hasta 50.000.000
     setDni(dev, d);
 
-    printf("|----------------------------------|\n");
-    printf("| Ingrese el documento del emisor: |\n");
-    scanf("%ld", &d);
+    do{
+        printf("|----------------------------------|\n");
+        printf("| Ingrese el documento del emisor: |\n");
+        scanf("%ld", &d);
+    }while(d < 4000000 || d > 50000000);  //rango de documento entre 4.000.000 hasta 50.000.000
     setDniRem(dev, d);
 
     printf("|---------------------------------|\n");
