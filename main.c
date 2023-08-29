@@ -99,7 +99,7 @@ int main(){
                 }
                 else{
                     printf("\n\n      Mostrando %d elementos\n", cant);
-                    show(lso);
+                    mostrarLSO(lso);
                 }
                 break;
     }
@@ -133,7 +133,7 @@ void loadList(list *lso, Deliveries *dev, int *cant){
         printf("\n|-------- Cargando Datos --------|");
         printf("\n|--------------------------------|\n\n");
         loadDeliveries(dev);
-        highValue = high(lso, *dev);
+        highValue = altaLSO(lso, *dev);
         switch(highValue){
             case 0: printf("|----------------------------------------------|\n");
                     printf("| Error al cargar elemento. No hay mas espacio |\n");
@@ -168,7 +168,7 @@ void preload(list *lso, int *cant){
     Deliveries dev;
     char code[CODE], name[NAME], nameSender[NAME], addres[NAME], dateS[DATE], dateR[DATE];
     long dni, dniS;
-    int highValue, enter, belongsValue;
+    int highValue, enter;
 
     FILE *preload;
     preload = fopen("Envios.txt", "r");
@@ -198,7 +198,7 @@ void preload(list *lso, int *cant){
             fscanf(preload, " %[^\n]\n", dateR);
             setFechaRec(&dev, dateR);
 
-            highValue = high(lso, dev);
+            highValue = altaLSO(lso, dev);
 
             switch(highValue){
                 case 0: printf("|----------------------------------------------|\n");
@@ -261,10 +261,10 @@ void delete(list *lso, int *cant){
                 code[i] = toupper(code[i]);
             }
             setCodigo(&dev, code);
-            evocationValue = evocation(*lso, &dev);
+            evocationValue = evocacionLSO(*lso, &dev);
 
             if(evocationValue == 1){
-                lowValue = low(lso, dev);
+                lowValue = bajaLSO(lso, dev);
                 switch(lowValue){
                     case 1: printf("|-----------------------------------------------------|\n");
                             printf("|  Error al borrar elemento. Ha cancelado el proceso  |\n");
@@ -310,7 +310,7 @@ void changeList(list *lso){
     }
     setCodigo(&d, code);
     
-    evocationValue = evocation(*lso, &d);
+    evocationValue = evocacionLSO(*lso, &d);
     if(evocationValue == 0){
         printf("|----------------------------------------------------------------------------|\n");
         printf("   No se pueden modificar datos, no hay coincidencias para el codigo %s      \n", code);
@@ -318,7 +318,7 @@ void changeList(list *lso){
     }
     else{
         changeDeliveries(&d);
-        changeValue = change(lso, d);
+        changeValue = modificarLSO(lso, d);
         if(changeValue == 1){
             printf("|-------------------------------------------------------|\n");
             printf("|   Se han realizado las modificaciones correctamente   |\n");
@@ -355,7 +355,7 @@ void information(list lso){
     }
     setCodigo(&d, code);
 
-    evocationValue = evocation(lso, &d);
+    evocationValue = evocacionLSO(lso, &d);
     if(evocationValue == 1){
         printf("\n|---------------------------------|");
         printf("\n    INFORMACION DEL ENVIO %s", code);

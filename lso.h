@@ -20,7 +20,7 @@ Codificacion de Localizacion:
 return 0 - Fracaso, no esta el elemento
 return 1 - Exito
 */
-int locate(list lso, char c[], int *position){   //Localizar 
+int localizarLSO(list lso, char c[], int *position){   //Localizar 
     int i = 0;
 
     while((i <= lso.last) && strcmp(lso.deliveriesList[i].code, c) < 0){   //Porque esta ordenada de menor a mayor
@@ -43,10 +43,10 @@ return 0 - Fracaso por lista llena
 return 1 - Fracaso por elemento existente
 return 2 - Exito
 */
-int high(list *lso, Deliveries dev){    //Alta
+int altaLSO(list *lso, Deliveries dev){    //Alta
     int position, last;
 
-    if(locate(*lso, dev.code, &position) == 1){  //Elemento localizado en la lista
+    if(localizarLSO(*lso, dev.code, &position) == 1){  //Elemento localizado en la lista
         return 1; 
     }
     else{
@@ -73,10 +73,10 @@ return 0 - Fracaso por elemento inexistente en lista
 return 1 - Fracaso por no confirmar la baja
 return 2 - Exito
 */
-int low(list *lso, Deliveries dev){      //Baja
+int bajaLSO(list *lso, Deliveries dev){      //Baja
     int position, ok;
     
-    if(locate(*lso, dev.code, &position) == 0){
+    if(localizarLSO(*lso, dev.code, &position) == 0){
         return 0;   //No podemos dar de baja porque no existe el elemento
     }
     else{
@@ -124,10 +124,10 @@ Codificacion de la Evocacion:
 return 0 - Fracaso por no existir coincidencias
 return 1 - Exito
 */
-int evocation(list lso, Deliveries *dev){    //Evocacion
+int evocacionLSO(list lso, Deliveries *dev){    //Evocacion
     int position;
 
-    if((locate(lso, (*dev).code, &position)) == 0){
+    if((localizarLSO(lso, (*dev).code, &position)) == 0){
         return 0;
     }
     else{
@@ -150,10 +150,10 @@ return 0 - Fracaso por no existir elemento
 return 1 - Fracaso por existir elemento, pero no coincide con los atributos
 return 2 - Exito
 */
-int belongs(Deliveries dev, list lso){   //Pertenece
+int perteneceLSO(Deliveries dev, list lso){   //Pertenece
     int position;
     
-    if((locate(lso, dev.code, &position)) == 1){
+    if((localizarLSO(lso, dev.code, &position)) == 1){
         int a = strcmp((dev).code, lso.deliveriesList[position].code);
         int b = strcmp((dev).name, lso.deliveriesList[position].name);
         int c = strcmp((dev).nameSender, lso.deliveriesList[position].nameSender);
@@ -179,10 +179,10 @@ Codificacion del modificar:
 return 0 - Fracaso por elemento inexistente en lista
 return 1 - Exito en la modificacion
 */
-int change(list *lso, Deliveries dev){  //Modificar
+int modificarLSO(list *lso, Deliveries dev){  //Modificar
     int position;
 
-    if((locate(*lso, dev.code, &position)) == 1){
+    if((localizarLSO(*lso, dev.code, &position)) == 1){
         lso->deliveriesList[position] = dev;
         return 1;    //Modificacion exitosa
     }
@@ -192,7 +192,7 @@ int change(list *lso, Deliveries dev){  //Modificar
 }
 
 
-void show(list lso){      //Mostrar
+void mostrarLSO(list lso){      //Mostrar
     int i, enter, cont = 0;
 
     for(i = 0; i <= lso.last; i++){
