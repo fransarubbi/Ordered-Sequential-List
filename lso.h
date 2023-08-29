@@ -100,11 +100,16 @@ int low(list *lso, Deliveries dev){      //Baja
         }while(ok < 0 || ok > 1);
 
         if(ok == 1){
-            while(position <= lso->last){
-                lso->deliveriesList[position] = lso->deliveriesList[position + 1];
-                position = position + 1;
+            if(position == lso->last){
+                lso->last = lso->last - 1;
             }
-            lso->last = lso->last - 1;
+            else{
+                while(position < lso->last){
+                    lso->deliveriesList[position] = lso->deliveriesList[position + 1];
+                    position = position + 1;
+                }
+                lso->last = lso->last - 1;
+            }
             return 2;  //Baja exitosa
         }
         else{

@@ -56,7 +56,14 @@ int main(){
     }
 
     switch(opcion){
-        case 1: loadList(&lso, &dev, &cant);
+        case 1: if(cant == SIZE){
+                    printf("\n|------------------------------------------------|");
+                    printf("\n| No se pueden cargar datos. La lista esta llena |");
+                    printf("\n|------------------------------------------------|\n");
+                }
+                else{
+                    loadList(&lso, &dev, &cant);
+                }
                 break;
 
         case 2: delete(&lso, &cant);
@@ -91,6 +98,7 @@ int main(){
                     printf("\n|-------------------------------------------------|\n");
                 }
                 else{
+                    printf("\n\n      Mostrando %d elementos\n", cant);
                     show(lso);
                 }
                 break;
