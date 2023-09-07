@@ -46,23 +46,25 @@ return 2 - Exito
 int altaLSO(list *lso, Deliveries dev){    //Alta
     int position, last;
 
-    if(localizarLSO(*lso, dev.code, &position) == 1){  //Elemento localizado en la lista
-        return 1; 
-    }
-    else{
-        last = lso->last;  //Variable last para no modificar el valor de lso.last
-        if(last < (SIZE - 1)){    //Hay espacio en la lista
+    last = lso->last;  //Variable last para no modificar el valor de lso.last
+
+    if(last < (SIZE - 1)){
+        if(localizarLSO(*lso, dev.code, &position) == 1){  //Elemento localizado en la lista
+            return 1; 
+        }
+        else{
+            //El elemento no existe en la lista
             while(position <= last){   //Realizar shifteo a derecha
-               lso->deliveriesList[last + 1] = lso->deliveriesList[last];
-               last = last - 1;
+                lso->deliveriesList[last + 1] = lso->deliveriesList[last];
+                last = last - 1;
             }
             lso->deliveriesList[position] = dev;   //Ingresar el nuevo elemento en el sitio adecuado
             lso->last = lso->last + 1;   //Actualizar el valor de lso.last
-            return 2;  
+            return 2; 
         }
-        else{      
-            return 0;
-        }
+    }
+    else{
+        return 0;  //No hay espacio en la lista
     }
 }
 
@@ -84,14 +86,14 @@ int bajaLSO(list *lso, Deliveries dev){      //Baja
             printf("\n===========================================================");
             printf("\n            Esta por eliminar datos. Estos son:         ");
             printf("\n===========================================================\n");
-            printf("\n| Codigo: %s", getCodigo((*lso).deliveriesList[position]));
-            printf("\n| Dni receptor: %ld", getDni((*lso).deliveriesList[position]));
-            printf("\n| Dni remitente: %ld", getDniRem((*lso).deliveriesList[position]));
-            printf("\n| Nombre y apellido del receptor: %s", getNomAp((*lso).deliveriesList[position]));
-            printf("\n| Nombre y apellido del remitente: %s", getNomApRem((*lso).deliveriesList[position]));
-            printf("\n| Domicilio del envio: %s", getDomicilio((*lso).deliveriesList[position]));
-            printf("\n| Fecha de envio: %s", getFechaEnv((*lso).deliveriesList[position]));
-            printf("\n| Fecha de recepcion: %s", getFechaRec((*lso).deliveriesList[position]));
+            printf("\n| Codigo: %s", lso->deliveriesList[position].code);
+            printf("\n| Dni receptor: %ld", lso->deliveriesList[position].doc);
+            printf("\n| Dni remitente: %ld", lso->deliveriesList[position].docSender);
+            printf("\n| Nombre y apellido del receptor: %s", lso->deliveriesList[position].name);
+            printf("\n| Nombre y apellido del remitente: %s", lso->deliveriesList[position].nameSender);
+            printf("\n| Domicilio del envio: %s", lso->deliveriesList[position].address);
+            printf("\n| Fecha de envio: %s", lso->deliveriesList[position].dateSender);
+            printf("\n| Fecha de recepcion: %s", lso->deliveriesList[position].dateReceived);
             printf("\n===========================================================");
             printf("\n                    ¿Esta de acuerdo?                    ");
             printf("\n             0.No                        1.Si            ");
@@ -179,11 +181,114 @@ Codificacion del modificar:
 return 0 - Fracaso por elemento inexistente en lista
 return 1 - Exito en la modificacion
 */
-int modificarLSO(list *lso, Deliveries dev){  //Modificar
-    int position;
+int modificarLSO(list *lso, Deliveries *dev){  //Modificar
+    int position, i, j = 0, option;
+    char n[NAME], date[DATE];
 
-    if((localizarLSO(*lso, dev.code, &position)) == 1){
-        lso->deliveriesList[position] = dev;
+    if((localizarLSO(*lso, (*dev).code, &position)) == 1){
+       
+        (*dev) = lso->deliveriesList[position];
+
+        printf("\n==================================================================");
+        printf("\n               Esta por modificar datos. Estos son:         ");
+        printf("\n==================================================================\n");
+        printf("\n| Codigo: %s", lso->deliveriesList[position].code);
+        printf("\n| Dni receptor: %ld", lso->deliveriesList[position].doc);
+        printf("\n| Dni remitente: %ld", lso->deliveriesList[position].docSender);
+        printf("\n| Nombre y apellido del receptor: %s", lso->deliveriesList[position].name);
+        printf("\n| Nombre y apellido del remitente: %s", lso->deliveriesList[position].nameSender);
+        printf("\n| Domicilio del envio: %s", lso->deliveriesList[position].address);
+        printf("\n| Fecha de envio: %s", lso->deliveriesList[position].dateSender);
+        printf("\n| Fecha de recepcion: %s", lso->deliveriesList[position].dateReceived);
+        printf("\n===================================================================\n");
+
+        do{
+            do{
+                printf("\n");
+                printf("\n|--------------------------------------------|");
+                printf("\n|         ¿Que dato desea modificar?         |");
+                printf("\n|--------------------------------------------|");
+                printf("\n| 1.Documento del receptor                   |");
+                printf("\n| 2.Documento del emisor                     |");
+                printf("\n| 3.Nombre del receptor                      |");
+                printf("\n| 4.Nombre del emisor                        |");
+                printf("\n| 5.Domicilio                                |");
+                printf("\n| 6.Fecha de envio                           |");
+                printf("\n| 7.Fecha de recepcion                       |");
+                printf("\n|--------------------------------------------|\n");
+                scanf("%d", &option);
+            }while(option < 1 || option > 7);
+
+            switch(option){
+                case 1: printf("|--------------------------------------|\n");
+                        printf("|  Ingrese el documento del receptor:  |\n");
+                        scanf("%ld", &(*dev).doc);
+                        break;
+
+                case 2: printf("|-------------------------------------|\n");
+                        printf("|  Ingrese el documento del emisor:   |\n");
+                        scanf("%ld", &(*dev).docSender);
+                        break;
+
+                case 3: printf("|------------------------------------|\n");
+                        printf("|  Ingrese el nombre del receptor:   |\n");
+                        scanf(" %[^\n]", n);
+                        for(i = 0; n[i] != '\0'; i++){
+                            n[i] = toupper(n[i]);
+                        }
+                        strcpy((*dev).name, n);
+                        break;
+
+                case 4: printf("|---------------------------------|\n");
+                        printf("|  Ingrese el nombre del emisor:  |\n");
+                        scanf(" %[^\n]", n);
+                        for(i = 0; n[i] != '\0'; i++){
+                            n[i] = toupper(n[i]);
+                        }
+                        strcpy((*dev).nameSender, n);
+                        break;
+
+                case 5: printf("|-----------------------------------|\n");
+                        printf("|  Ingrese la direccion del envio:  |\n");
+                        scanf(" %[^\n]", n);
+                        for(i = 0; n[i] != '\0'; i++){
+                            n[i] = toupper(n[i]);
+                        }
+                        strcpy((*dev).address, n);
+                        break;
+
+                case 6: printf("|------------------------------|\n");
+                        printf("|  Ingrese la fecha de envio:  |\n");
+                        scanf(" %[^\n]", date);
+                        for(i = 0; date[i] != '\0'; i++){
+                            date[i] = toupper(date[i]);
+                        }
+                        strcpy((*dev).dateSender, date);
+                        break;
+
+                case 7: printf("|----------------------------------|\n");
+                        printf("|  Ingrese la fecha de recepcion:  |\n");
+                        scanf(" %[^\n]", date);
+                        for(i = 0; date[i] != '\0'; i++){
+                            date[i] = toupper(date[i]);
+                        }
+                        strcpy((*dev).dateReceived, date);
+                        break;
+            }
+
+            do{
+                printf("\n");
+                printf("|---------------------------------------------|\n");
+                printf("| Ingrese 1 si desea seguir modificando datos |\n");
+                printf("|---------------------------------------------|\n");
+                printf("|          Ingrese 0 si desea salir           |\n");
+                printf("|---------------------------------------------|\n");
+                scanf("%d", &j);
+            }while(j > 1 || j < 0);
+
+        }while(j == 1);
+        
+        lso->deliveriesList[position] = (*dev);
         return 1;    //Modificacion exitosa
     }
     else{
@@ -197,14 +302,14 @@ void mostrarLSO(list lso){      //Mostrar
 
     for(i = 0; i <= lso.last; i++){
         printf("\n|========================================|");
-        printf("\n| Codigo: %s", getCodigo(lso.deliveriesList[i]));
-        printf("\n| Dni receptor: %ld", getDni(lso.deliveriesList[i]));
-        printf("\n| Dni remitente: %ld", getDniRem(lso.deliveriesList[i]));
-        printf("\n| Nombre y apellido del receptor: %s", getNomAp(lso.deliveriesList[i]));
-        printf("\n| Nombre y apellido del remitente: %s", getNomApRem(lso.deliveriesList[i]));
-        printf("\n| Domicilio del envio: %s", getDomicilio(lso.deliveriesList[i]));
-        printf("\n| Fecha de envio: %s", getFechaEnv(lso.deliveriesList[i]));
-        printf("\n| Fecha de recepcion: %s", getFechaRec(lso.deliveriesList[i]));
+        printf("\n| Codigo: %s", lso.deliveriesList[i].code);
+        printf("\n| Dni receptor: %ld", lso.deliveriesList[i].doc);
+        printf("\n| Dni remitente: %ld", lso.deliveriesList[i].docSender);
+        printf("\n| Nombre y apellido del receptor: %s", lso.deliveriesList[i].name);
+        printf("\n| Nombre y apellido del remitente: %s", lso.deliveriesList[i].nameSender);
+        printf("\n| Domicilio del envio: %s", lso.deliveriesList[i].address);
+        printf("\n| Fecha de envio: %s", lso.deliveriesList[i].dateSender);
+        printf("\n| Fecha de recepcion: %s", lso.deliveriesList[i].dateReceived);
         printf("\n|========================================|\n\n");
         cont++;
 
