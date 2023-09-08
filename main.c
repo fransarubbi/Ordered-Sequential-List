@@ -248,7 +248,7 @@ void delete(list *lso, int *cant){
 
     Deliveries dev;
     char code[CODE];
-    int n, i = 0, j = 0, lowValue, evocationValue, enter;
+    int n, i = 0, j = 0, lowValue, enter;
 
     if(*cant < 1){
         printf("\n|------------------------------------------|");
@@ -311,7 +311,7 @@ void changeList(list *lso){
     
     Deliveries d;
     char code[CODE];
-    int i, changeValue, evocationValue, enter;
+    int i, changeValue, enter;
 
     printf("|----------------------------------------------------|\n");
     printf("|  Ingrese el codigo del envio que desea modificar:  |\n");
