@@ -273,30 +273,27 @@ void delete(list *lso, int *cant){
                 code[i] = toupper(code[i]);
             }
             strcpy(&dev.code, code);
-            evocationValue = evocacionLSO(*lso, &dev);
 
-            if(evocationValue == 1){
-                lowValue = bajaLSO(lso, dev);
-                switch(lowValue){
-                    case 1: printf("|-----------------------------------------------------|\n");
-                            printf("|  Error al borrar elemento. Ha cancelado el proceso  |\n");
-                            printf("|-----------------------------------------------------|\n\n");
-                            j++;
-                            break;
+            lowValue = bajaLSO(lso, dev);
+            switch(lowValue){
+                case 0: printf("|-----------------------------------------------------|\n");
+                        printf("|   Error al borrar elemento. No existe en la lista   |\n");
+                        printf("|-----------------------------------------------------|\n\n");
+                        j++;
+                        break;
 
-                    case 2: printf("|----------------------------------------------|\n");
-                            printf("|            Baja exitosa de datos             |\n");
-                            printf("|----------------------------------------------|\n\n");
-                            j++;
-                            *cant = *cant - 1;
-                            break;
-                }
-            }
-            else{
-                printf("|---------------------------------------------------|\n");
-                printf("|  Error al borrar elemento. No existe en la lista  |\n");
-                printf("|---------------------------------------------------|\n\n");
-                j++;
+                case 1: printf("|-----------------------------------------------------|\n");
+                        printf("|  Error al borrar elemento. Ha cancelado el proceso  |\n");
+                        printf("|-----------------------------------------------------|\n\n");
+                        j++;
+                        break;
+
+                case 2: printf("|----------------------------------------------|\n");
+                        printf("|            Baja exitosa de datos             |\n");
+                        printf("|----------------------------------------------|\n\n");
+                        j++;
+                        *cant = *cant - 1;
+                        break;
             }
         }while(j < n);
     }
