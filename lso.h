@@ -28,7 +28,7 @@ int localizarLSO(list lso, char c[], int *position){   //Localizar
     }
 
     *position = i;  
-    if(strcmp(lso.deliveriesList[i].code, c) == 0){  
+    if((strcmp(lso.deliveriesList[i].code, c) == 0) && (i <= lso.last)){  
         return 1;
     }
     else{

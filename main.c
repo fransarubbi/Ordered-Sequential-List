@@ -232,8 +232,8 @@ void preload(list *lso, int *cant){
             }
         }
         printf("           Elementos cargados: %d\n", *cant);
+        fclose(preload);
     }
-    fclose(preload);
     
     do{
         printf("\n|---------------------------------|");
